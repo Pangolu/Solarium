@@ -1,0 +1,16 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Nom</th>
+      <th scope="col">Ubicacio</th>
+      <th scope="col">Usuari</th>
+      <th scope="col">Capacitat</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for(planta of plantes(); track planta.id){
+      <tr app-plantes-table-row [plantaId]="planta"></tr> <!--[planta] ha d'estar en el fill, perque sera el que li passara el pare-->
+      <!--[plantaId es el alias que tenim en el .ts]-->
+    }
+  </tbody>
+</table>

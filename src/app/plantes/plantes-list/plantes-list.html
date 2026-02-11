@@ -1,0 +1,5 @@
+<div class="cards-container">
+  @for(card of cards(); track card.id){
+    <app-planta-card [plantaId]="card" (coretPreferit)="coretFavorit(card)"></app-planta-card>
+  }
+</div>

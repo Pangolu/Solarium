@@ -1,0 +1,15 @@
+<div class="container">
+  <form [formGroup]="formulario" (ngSubmit)="login()">
+    <div class="form-group">
+      <label for="email">Email address</label>
+      <input type="email" class="form-control" id="email" formControlName="email">
+      <small *ngIf="emailNotValid" class="form-text text-danger">Enter a valid email.</small>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="password" formControlName="password">
+    </div>
+    <button type="submit" class="btn btn-primary">Sign in</button>
+  </form>
+  <div *ngIf="errorMessage" class="text-danger mt-2">{{ errorMessage }}</div>
+</div>
