@@ -8,7 +8,7 @@ export const authGuard: CanActivateFn = async () => {
   const { data, error } = await supaservice.getCurrentUser();
 
   if (error || !data?.user) {
-    return router.createUrlTree(['/login']);
+    return router.createUrlTree(['/home']);
   }
 
   return true;

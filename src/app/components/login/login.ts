@@ -11,31 +11,29 @@ import { Supaservice } from '../../services/supaservice';
   styleUrl: './login.css',
 })
 export class Login {
-
   supaservice: Supaservice = inject(Supaservice);
   formulario: FormGroup;
   formBuilder: FormBuilder = inject(FormBuilder);
   router: Router = inject(Router);
   errorMessage: string = '';
 
-  constructor(){
+  constructor() {
     this.formulario = this.formBuilder.group({
       email: ['', [Validators.email, Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
-    })
+      password: ['', [Validators.required, Validators.minLength(8)]],
+    });
   }
 
-  get emailNotValid(){
+  get emailNotValid() {
     return this.formulario.controls['email']!.invalid && this.formulario.controls['email']!.touched;
   }
 
-  async login(){
+  async login() {
     if (this.formulario.valid) {
       try {
         await this.supaservice.login(this.formulario.value);
         this.errorMessage = '';
-        // Navigate to home after successful login
-        this.router.navigate(['/home']);
+        this.router.navigate(['/plantes_table']);
       } catch (error: any) {
         this.errorMessage = error.message || 'Login failed';
       }

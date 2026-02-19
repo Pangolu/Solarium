@@ -2,16 +2,16 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { Supaservice } from '../../services/supaservice';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
 export class Register {
-
   supaservice: Supaservice = inject(Supaservice);
   formulario: FormGroup;
   formBuilder: FormBuilder = inject(FormBuilder);
@@ -27,7 +27,7 @@ export class Register {
         password: ['', [Validators.required, Validators.minLength(8)]],
         confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
       },
-      { validators: this.passwordsMatchValidator }
+      { validators: this.passwordsMatchValidator },
     );
   }
 
@@ -42,15 +42,23 @@ export class Register {
   }
 
   get passwordNotValid() {
-    return this.formulario.controls['password']!.invalid && this.formulario.controls['password']!.touched;
+    return (
+      this.formulario.controls['password']!.invalid && this.formulario.controls['password']!.touched
+    );
   }
 
   get confirmPasswordNotValid() {
-    return this.formulario.controls['confirmPassword']!.invalid && this.formulario.controls['confirmPassword']!.touched;
+    return (
+      this.formulario.controls['confirmPassword']!.invalid &&
+      this.formulario.controls['confirmPassword']!.touched
+    );
   }
 
   get passwordMismatch() {
-    return this.formulario.hasError('passwordMismatch') && this.formulario.controls['confirmPassword']!.touched;
+    return (
+      this.formulario.hasError('passwordMismatch') &&
+      this.formulario.controls['confirmPassword']!.touched
+    );
   }
 
   async signup() {
@@ -61,7 +69,7 @@ export class Register {
         this.errorMessage = '';
         this.successMessage = 'Account created. Check your email to confirm.';
         this.formulario.reset();
-        this.router.navigate(['/login']);
+        this.router.navigate(['/home']);
       } catch (error: any) {
         this.errorMessage = error.message || 'Signup failed';
         this.successMessage = '';
@@ -72,5 +80,4 @@ export class Register {
       this.formulario.markAllAsTouched();
     }
   }
-
 }
