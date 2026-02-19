@@ -1,7 +1,6 @@
-      
-        <td>{{planta().nom}}</td>
-        <td>{{planta().ubicacio.latitude}}, {{planta().ubicacio.longitude}}</td>
-        <td>{{planta().user}}</td>
-        <td>{{planta().capacitat}}</td>
-      
-78
+<td>
+  <a [routerLink]="['/planta', planta().id]">{{ planta().nom }}</a>
+</td>
+<td>{{ planta().ubicacio.latitude }}, {{ planta().ubicacio.longitude }}</td>
+<td>{{ planta().user }}</td>
+<td>{{ planta().capacitat }}</td>
