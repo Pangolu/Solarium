@@ -5,12 +5,58 @@
       <th scope="col">Ubicacio</th>
       <th scope="col">Usuari</th>
       <th scope="col">Capacitat</th>
+      <th scope="col">Favorita</th>
+      <th scope="col">Accions</th>
     </tr>
   </thead>
   <tbody>
     @for(planta of plantes(); track planta.id){
-      <tr app-plantes-table-row [plantaId]="planta"></tr> <!--[planta] ha d'estar en el fill, perque sera el que li passara el pare-->
+      <tr app-plantes-table-row [plantaId]="planta" (editarPlanta)="editarPlanta($event)" (eliminarPlanta)="eliminarPlanta($event)"></tr> <!--[planta] ha d'estar en el fill, perque sera el que li passara el pare-->
       <!--[plantaId es el alias que tenim en el .ts]-->
     }
   </tbody>
 </table>
+
+@if (errorMessage()) {
+  <p>{{ errorMessage() }}</p>
+}
+
+<form [formGroup]="plantaForm" (ngSubmit)="afegirPlanta()" class="planta-form">
+  <h3>{{ editingPlantaId() === null ? 'Afegir planta solar' : 'Editar planta solar' }}</h3>
+
+  <div class="form-row">
+    <label for="nom">Nom</label>
+    <input id="nom" type="text" formControlName="nom" />
+  </div>
+
+  <div class="form-row">
+    <label for="latitude">Latitud</label>
+    <input id="latitude" type="number" step="any" formControlName="latitude" />
+  </div>
+
+  <div class="form-row">
+    <label for="longitude">Longitud</label>
+    <input id="longitude" type="number" step="any" formControlName="longitude" />
+  </div>
+
+  <div class="form-row">
+    <label for="capacitat">Capacitat</label>
+    <input id="capacitat" type="number" step="any" min="0" formControlName="capacitat" />
+  </div>
+
+  <div class="form-row">
+    <label for="foto">Foto (URL)</label>
+    <input id="foto" type="text" formControlName="foto" />
+  </div>
+
+  <div class="form-row checkbox-row">
+    <label for="favorite">Favorita</label>
+    <input id="favorite" type="checkbox" formControlName="favorite" />
+  </div>
+
+  @if (plantaForm.invalid && plantaForm.touched) {
+    <p>Revisa els camps obligatoris del formulari.</p>
+  }
+
+  <button type="submit" [disabled]="isSaving()">{{ editingPlantaId() === null ? 'Guardar planta' : 'Guardar canvis' }}</button>
+</form>

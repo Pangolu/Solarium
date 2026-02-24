@@ -1,20 +1,13 @@
 <div class="card" style="width: 18rem">
-  <img [src]="card().foto" class="card-img-top" alt="..." />
+  <img [src]="getImageSrc()" class="card-img-top" alt="Imatge planta solar" />
   <div class="card-body">
     <h5 class="card-title">{{ card().nom }}</h5>
-    <p (click)="preferit()">{{ card().favorite ? '<3' : '<|3' }}</p>
-    <!--Ternaria, si es favorita coret, si no es favorita cor trencat-->
-    <p class="card-text">
-      Ubicació: {{ card().ubicacio.latitude }}, {{ card().ubicacio.longitude }}
-    </p>
-    <p></p>
+    <p (click)="preferit()">{{ card().favorite ? '❤️' : '' }}</p>
+    <p class="card-text">ID: {{ card().id }}</p>
+    <p class="card-text">Usuari: {{ card().user }}</p>
+    <p class="card-text">Data creació: {{ card().created_at }}</p>
+    <p class="card-text">Ubicació: {{ card().ubicacio.latitude }}, {{ card().ubicacio.longitude }}</p>
     <p class="card-text">Capacitat: {{ card().capacitat }}</p>
-    <p class="card-text">
-      Some quick example text to build on the card title and make up the bulk of the card's content.
-    </p>
-    <p class="card-text">
-      Some quick example text to build on the card title and make up the bulk of the card's content.
-    </p>
-    <a [routerLink]="['/planta', card().id]" class="btn btn-primary">Go somewhere</a>
+    <a [routerLink]="['/planta', card().id]" class="btn btn-primary">Veure detall</a>
   </div>
 </div>

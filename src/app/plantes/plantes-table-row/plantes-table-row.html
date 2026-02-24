@@ -4,3 +4,8 @@
 <td>{{ planta().ubicacio.latitude }}, {{ planta().ubicacio.longitude }}</td>
 <td>{{ planta().user }}</td>
 <td>{{ planta().capacitat }}</td>
+<td>{{ planta().favorite ? '❤️' : '' }}</td>
+<td>
+  <button type="button" (click)="editar()">Editar</button>
+  <button type="button" (click)="eliminar()">Eliminar</button>
+</td>

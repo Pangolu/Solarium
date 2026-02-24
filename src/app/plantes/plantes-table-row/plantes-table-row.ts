@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Planta } from '../planta';
 import { RouterLink } from '@angular/router';
 
@@ -11,4 +11,14 @@ import { RouterLink } from '@angular/router';
 export class PlantesTableRow {
   //planta!: Planta; //!: asegura que la planta va a estar
   planta = input.required<Planta>({ alias: 'plantaId' }); //alias es el nom que tindra el atribut en el pare
+  editarPlanta = output<Planta>();
+  eliminarPlanta = output<number>();
+
+  editar() {
+    this.editarPlanta.emit(this.planta());
+  }
+
+  eliminar() {
+    this.eliminarPlanta.emit(this.planta().id);
+  }
 }

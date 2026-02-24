@@ -1,6 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
 import { PlantaCard } from '../planta-card/planta-card';
-import { PLANTA_DEMO } from '../plantes_demo';
 import { Planta } from '../planta';
 import { Supaservice } from '../../services/supaservice';
 
@@ -14,15 +13,33 @@ export class PlantesList {
 
   private supaservice: Supaservice = inject(Supaservice);
 
-  //cards = signal<Planta[]>(PLANTA_DEMO);
-
   cards = signal<Planta[]>([]);
-  ngOnInit(): void{
-    this.cards.set(PLANTA_DEMO);
+  errorMessage = signal<string>('');
+
+  async ngOnInit() {
+    await this.carregarPlantes();
   }
 
-  coretFavorit(planta: Planta){
+  coretFavorit(planta: Planta) {
     planta.favorite = !planta.favorite;
+  }
+
+  private async carregarPlantes() {
+    this.errorMessage.set('');
+    try {
+      const plantes = await this.supaservice.getPlantesFromCurrentUser();
+      this.cards.set(plantes);
+    } catch (error) {
+      this.cards.set([]);
+      const fallback = 'Error al carregar les plantes';
+      const message =
+        error instanceof Error
+          ? error.message
+          : typeof error === 'object' && error !== null && 'message' in error
+            ? String((error as { message: unknown }).message)
+            : fallback;
+      this.errorMessage.set(message || fallback);
+    }
   }
 
 }

@@ -1,0 +1,20 @@
+.planta-form {
+	margin-top: 1rem;
+	display: grid;
+	gap: 0.5rem;
+	max-width: 480px;
+}
+
+.form-row {
+	display: grid;
+	gap: 0.25rem;
+}
+
+.checkbox-row {
+	grid-template-columns: 1fr auto;
+	align-items: center;
+}
+
+button[type='submit'] {
+	justify-self: start;
+}
