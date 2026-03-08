@@ -1,6 +1,40 @@
 # Solarium
 
-Projecte generat amb [Angular CLI](https://github.com/angular/angular-cli) versio 21.0.5.
+Projecte generat amb [Angular CLI](https://github.com/angular/angular-cli) versio 21.0.5 Angular 21 per gestionar plantes solars d'usuaris autenticats amb Supabase, incloent registre/inici de sessio, visualitzacio en taula i targetes, mapa interactiu per coordenades i edicio de perfil.
+
+## Elements avaluables
+
+### Formulari de login i registre amb signalForms i validacions
+
+![Pantalla de login](/public/docs/fomulari_login.png)
+
+![Pantalla de login](/public/docs/formulari_registre.png)
+
+### Formulari de plantes solars amb localització per mapa i validacions
+
+![Pantalla de login](/public/docs/validacio_formulari_plantes.png)
+
+![Pantalla de login](/public/docs/formulari_plantes.png)
+
+### Llista de plantes i detall individual
+
+![Pantalla de login](/public/docs/llista_plantes.png)
+
+![Pantalla de login](/public/docs/detall_plantes.png)
+
+### Formulari de perfil amb visualizació de imatge
+
+![Pantalla de login](/public/docs/fomulari_perfil.png)
+
+### Mapa amb ubicació de les plantes carregades a Supabase
+
+![Pantalla de login](/public/docs/localitzacio_plantes.png)
+
+## Altres
+
+### Model UML a Supabase
+
+![Pantalla de login](/public/docs/uml.png)
 
 ## Servidor de desenvolupament
 
