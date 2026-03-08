@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { email, form, required, submit } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { Supaservice } from '../../services/supaservice';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
