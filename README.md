@@ -6,7 +6,7 @@ Projecte generat amb [Angular CLI](https://github.com/angular/angular-cli) versi
 
 ### Formulari de login i registre amb signalForms i validacions
 
-![Pantalla de login](/public/docs/fomulari_login.png)
+![Pantalla de login](/public/docs/formulari_login.png)
 
 ![Pantalla de login](/public/docs/formulari_registre.png)
 
@@ -24,7 +24,7 @@ Projecte generat amb [Angular CLI](https://github.com/angular/angular-cli) versi
 
 ### Formulari de perfil amb visualizació de imatge
 
-![Pantalla de login](/public/docs/fomulari_perfil.png)
+![Pantalla de login](/public/docs/formulari_perfil.png)
 
 ### Mapa amb ubicació de les plantes carregades a Supabase
 
