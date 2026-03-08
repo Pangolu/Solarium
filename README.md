@@ -1,59 +1,59 @@
 # Solarium
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.5.
+Projecte generat amb [Angular CLI](https://github.com/angular/angular-cli) versio 21.0.5.
 
-## Development server
+## Servidor de desenvolupament
 
-To start a local development server, run:
+Per iniciar un servidor de desenvolupament local, executa:
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Quan el servidor estigui en marxa, obre el navegador i ves a `http://localhost:4200/`. L'aplicacio es recarregara automaticament cada vegada que modifiquis qualsevol fitxer font.
 
-## Code scaffolding
+## Generacio de codi
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Angular CLI inclou eines potents de generacio de codi. Per generar un component nou, executa:
 
 ```bash
 ng generate component component-name
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Per veure la llista completa d'esquemes disponibles (com ara `components`, `directives` o `pipes`), executa:
 
 ```bash
 ng generate --help
 ```
 
-## Building
+## Compilacio
 
-To build the project run:
+Per compilar el projecte, executa:
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Aixo compilara el projecte i desara els artefactes de compilacio al directori `dist/`. Per defecte, la compilacio de produccio optimitza l'aplicacio per obtenir millor rendiment i velocitat.
 
-## Running unit tests
+## Execucio de proves unitaries
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Per executar proves unitaries amb el motor de proves [Vitest](https://vitest.dev/), utilitza la comanda seguent:
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
+## Execucio de proves end-to-end
 
-For end-to-end (e2e) testing, run:
+Per executar proves end-to-end (e2e), executa:
 
 ```bash
 ng e2e
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Angular CLI no inclou per defecte cap framework de proves end-to-end. Pots triar el que millor s'adapti a les teves necessitats.
 
-## Additional Resources
+## Recursos addicionals
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Per obtenir mes informacio sobre l'us d'Angular CLI, incloent referencies detallades de comandes, visita la pagina [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli).

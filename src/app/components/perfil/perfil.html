@@ -1,0 +1,80 @@
+<section class="profile-container">
+  <div class="profile-card card">
+    <div class="card-body">
+      <h2 class="card-title mb-3">El meu perfil</h2>
+
+      @if (loading()) {
+        <p class="mb-0">Carregant dades del perfil...</p>
+      }
+
+      @if (!loading()) {
+        <form [formGroup]="formulario" (ngSubmit)="saveProfile()">
+          <div class="mb-3 avatar-editor">
+            <img [src]="avatarPreview()" alt="Previsualitzacio avatar" class="avatar-preview" />
+            <div class="avatar-actions">
+              <label for="avatarInput" class="form-label mb-1">Foto de perfil</label>
+              <input
+                id="avatarInput"
+                type="file"
+                accept="image/*"
+                class="form-control"
+                (change)="onAvatarSelected($event)"
+              />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="fullName" class="form-label">Nom complet</label>
+            <input id="fullName" type="text" class="form-control" formControlName="fullName" />
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Correu electronic</label>
+            <input id="email" type="email" class="form-control" formControlName="email" readonly />
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Nova contrasenya</label>
+            <input
+              id="password"
+              type="password"
+              class="form-control"
+              formControlName="password"
+              (blur)="markAsTouched('password')"
+            />
+            @if (passwordNotValid) {
+              <small class="text-danger">La contrasenya ha de tenir almenys 8 caracters.</small>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirma la nova contrasenya</label>
+            <input
+              id="confirmPassword"
+              type="password"
+              class="form-control"
+              formControlName="confirmPassword"
+              (blur)="markAsTouched('confirmPassword')"
+            />
+            @if (passwordMismatch) {
+              <small class="text-danger">Les contrasenyes no coincideixen.</small>
+            }
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Desar canvis</button>
+            <a [routerLink]="['/plantes_table']" class="btn btn-outline-secondary">Cancelar</a>
+          </div>
+        </form>
+      }
+
+      @if (errorMessage) {
+        <p class="text-danger mt-3 mb-0">{{ errorMessage }}</p>
+      }
+
+      @if (successMessage) {
+        <p class="text-success mt-3 mb-0">{{ successMessage }}</p>
+      }
+    </div>
+  </div>
+</section>

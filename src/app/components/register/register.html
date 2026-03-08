@@ -1,49 +1,85 @@
 <div class="register-container">
   <h1>Solarium</h1>
-  <img src="/energia-solar.png" alt="Energía solar" class="register-image" />
+  <img src="/imatge_predefinida.png" alt="Imatge predefinida" class="register-image" />
 
   <div class="container">
-    <form [formGroup]="formulario" (ngSubmit)="signup()">
+    <form (ngSubmit)="registrar()">
       <div class="form-group">
-        <label for="fullName">Full name</label>
-        <input type="text" class="form-control" id="fullName" formControlName="fullName" />
+        <label for="fullName">Nom complet</label>
+        <input
+          type="text"
+          class="form-control"
+          id="fullName"
+          [value]="modelRegistre().nomComplet"
+          (input)="actualitzarCamp('nomComplet', $event)"
+          (blur)="marcarComTocat('nomComplet')"
+        />
+        @if (nomCompletMassaCurt()) {
+          <small class="form-text text-danger">El nom ha de tenir almenys 2 lletres.</small>
+        }
       </div>
-
+      <br />
       <div class="form-group">
-        <label for="email">Email address</label>
-        <input type="email" class="form-control" id="email" formControlName="email" />
-        <small *ngIf="emailNotValid" class="form-text text-danger">Enter a valid email.</small>
+        <label for="email">Correu electrònic</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          [value]="modelRegistre().correuElectronic"
+          (input)="actualitzarCamp('correuElectronic', $event)"
+          (blur)="marcarComTocat('correuElectronic')"
+        />
+        @if (correuObligatori()) {
+          <small class="form-text text-danger">El correu electronic es obligatori.</small>
+        }
+        @if (correuFormatInvalid()) {
+          <small class="form-text text-danger">Introdueix un correu electrònic vàlid.</small>
+        }
       </div>
-
+      <br />
       <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" class="form-control" id="password" formControlName="password" />
-        <small *ngIf="passwordNotValid" class="form-text text-danger"
-          >Password must be at least 8 characters.</small
-        >
+        <label for="password">Contrasenya</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          [value]="modelRegistre().contrasenya"
+          (input)="actualitzarCamp('contrasenya', $event)"
+          (blur)="marcarComTocat('contrasenya')"
+        />
+        @if (contrasenyaNoValida()) {
+          <small class="form-text text-danger"
+            >La contrasenya ha de tenir almenys 8 caràcters.</small
+          >
+        }
       </div>
-
+      <br />
       <div class="form-group">
-        <label for="confirmPassword">Confirm password</label>
+        <label for="confirmPassword">Confirma la contrasenya</label>
         <input
           type="password"
           class="form-control"
           id="confirmPassword"
-          formControlName="confirmPassword"
+          [value]="modelRegistre().confirmaContrasenya"
+          (input)="actualitzarCamp('confirmaContrasenya', $event)"
+          (blur)="marcarComTocat('confirmaContrasenya')"
         />
-        <small *ngIf="confirmPasswordNotValid" class="form-text text-danger"
-          >Confirm your password.</small
-        >
-        <small *ngIf="passwordMismatch" class="form-text text-danger"
-          >Passwords do not match.</small
-        >
+        @if (confirmaContrasenyaNoValida()) {
+          <small class="form-text text-danger">Confirma la teva contrasenya.</small>
+        }
+        @if (contrasenyesNoCoincideixen()) {
+          <small class="form-text text-danger">Les contrasenyes no coincideixen.</small>
+        }
       </div>
-
-      <button type="submit" class="btn btn-primary">Create account</button>
+      <br />
+      <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
+        {{ isSubmitting() ? 'Creant compte...' : 'Crea un compte' }}
+      </button>
     </form>
 
-    <div *ngIf="errorMessage" class="text-danger mt-2">{{ errorMessage }}</div>
-    <div *ngIf="successMessage" class="text-success mt-2">{{ successMessage }}</div>
-    <a [routerLink]="['/home']" class="login-link">Volver al login</a>
+    @if (missatgeError()) {
+      <div class="text-danger mt-2">{{ missatgeError() }}</div>
+    }
+    <a [routerLink]="['/home']" class="login-link">Torna a l'inici de sessió</a>
   </div>
 </div>

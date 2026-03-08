@@ -1,0 +1,14 @@
+<section class="mapa-container">
+  <h2>Mapa</h2>
+  <div class="mapa-frame-wrapper" [class.loading]="loading()">
+    <div #mapContainer class="mapa-canvas" aria-label="Mapa de plantes solars"></div>
+  </div>
+
+  @if (loading()) {
+    <p class="map-status">Carregant plantes al mapa...</p>
+  }
+
+  @if (!loading() && errorMessage()) {
+    <p class="map-status map-error">{{ errorMessage() }}</p>
+  }
+</section>

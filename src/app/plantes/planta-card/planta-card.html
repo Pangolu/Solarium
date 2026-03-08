@@ -1,13 +1,17 @@
-<div class="card" style="width: 18rem">
+<div class="card solar-card">
   <img [src]="getImageSrc()" class="card-img-top" alt="Imatge planta solar" />
   <div class="card-body">
     <h5 class="card-title">{{ card().nom }}</h5>
-    <p (click)="preferit()">{{ card().favorite ? '❤️' : '' }}</p>
+    <button type="button" class="favorite-toggle" (click)="preferit()">
+      {{ card().favorite ? '❤️' : '🤍' }}
+    </button>
     <p class="card-text">ID: {{ card().id }}</p>
     <p class="card-text">Usuari: {{ card().user }}</p>
     <p class="card-text">Data creació: {{ card().created_at }}</p>
-    <p class="card-text">Ubicació: {{ card().ubicacio.latitude }}, {{ card().ubicacio.longitude }}</p>
+    <p class="card-text">
+      Ubicació: {{ card().ubicacio.latitude }}, {{ card().ubicacio.longitude }}
+    </p>
     <p class="card-text">Capacitat: {{ card().capacitat }}</p>
-    <a [routerLink]="['/planta', card().id]" class="btn btn-primary">Veure detall</a>
+    <a [routerLink]="['/planta', card().id]" class="btn btn-primary mt-auto">Veure detall</a>
   </div>
 </div>

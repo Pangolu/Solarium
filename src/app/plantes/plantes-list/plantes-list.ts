@@ -10,7 +10,6 @@ import { Supaservice } from '../../services/supaservice';
   styleUrl: './plantes-list.css',
 })
 export class PlantesList {
-
   private supaservice: Supaservice = inject(Supaservice);
 
   cards = signal<Planta[]>([]);
@@ -20,18 +19,23 @@ export class PlantesList {
     await this.carregarPlantes();
   }
 
-  coretFavorit(planta: Planta) {
-    planta.favorite = !planta.favorite;
-  }
+  async coretFavorit(planta: Planta) {
+    const favoritaNova = !(planta.favorite ?? false);
 
-  private async carregarPlantes() {
-    this.errorMessage.set('');
     try {
-      const plantes = await this.supaservice.getPlantesFromCurrentUser();
-      this.cards.set(plantes);
+      await this.supaservice.actualitzarFavoritaUsuariActual(planta.id, favoritaNova);
+      this.cards.update((plantes) =>
+        plantes.map((item) =>
+          item.id === planta.id
+            ? {
+                ...item,
+                favorite: favoritaNova,
+              }
+            : item,
+        ),
+      );
     } catch (error) {
-      this.cards.set([]);
-      const fallback = 'Error al carregar les plantes';
+      const fallback = 'Error en actualitzar la planta favorita';
       const message =
         error instanceof Error
           ? error.message
@@ -42,4 +46,21 @@ export class PlantesList {
     }
   }
 
+  private async carregarPlantes() {
+    this.errorMessage.set('');
+    try {
+      const plantes = await this.supaservice.getPlantesFromCurrentUser();
+      this.cards.set(plantes);
+    } catch (error) {
+      this.cards.set([]);
+      const fallback = 'Error en carregar les plantes';
+      const message =
+        error instanceof Error
+          ? error.message
+          : typeof error === 'object' && error !== null && 'message' in error
+            ? String((error as { message: unknown }).message)
+            : fallback;
+      this.errorMessage.set(message || fallback);
+    }
+  }
 }

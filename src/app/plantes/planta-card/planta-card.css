@@ -1,0 +1,41 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.solar-card {
+  width: 18rem;
+  height: 100%;
+}
+
+.solar-card .card-img-top {
+  height: 190px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.solar-card .card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.solar-card .card-text,
+.solar-card .card-body p {
+  margin-bottom: 0;
+}
+
+.solar-card .favorite-toggle {
+  align-self: flex-start;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: 1.1rem;
+  cursor: pointer;
+}

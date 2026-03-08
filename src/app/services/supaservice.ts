@@ -15,6 +15,7 @@ export class Supaservice {
   private http = inject(HttpClient);
   private supabase: SupabaseClient;
   private currentUser = signal<User | null>(null);
+  private readonly defaultProfileImage = '/imatge_predefinida.png';
 
   constructor() {
     this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
@@ -49,7 +50,7 @@ export class Supaservice {
   async getPlantesFromCurrentUser() {
     const { data: authData, error: authError } = await this.supabase.auth.getUser();
     if (authError || !authData.user) {
-      throw new Error(authError?.message ?? 'No authenticated user');
+      throw new Error(authError?.message ?? 'No hi ha cap usuari autenticat');
     }
 
     const userEmail = authData.user.email ?? authData.user.id;
@@ -79,7 +80,7 @@ export class Supaservice {
   async insertPlantaForCurrentUser(planta: PlantaInsertInput) {
     const { data: authData, error: authError } = await this.supabase.auth.getUser();
     if (authError || !authData.user) {
-      throw new Error(authError?.message ?? 'No authenticated user');
+      throw new Error(authError?.message ?? 'No hi ha cap usuari autenticat');
     }
 
     const userEmail = authData.user.email ?? authData.user.id;
@@ -121,7 +122,7 @@ export class Supaservice {
   async updatePlantaForCurrentUser(id: number, planta: PlantaInsertInput) {
     const { data: authData, error: authError } = await this.supabase.auth.getUser();
     if (authError || !authData.user) {
-      throw new Error(authError?.message ?? 'No authenticated user');
+      throw new Error(authError?.message ?? 'No hi ha cap usuari autenticat');
     }
 
     const userEmail = authData.user.email ?? authData.user.id;
@@ -163,12 +164,29 @@ export class Supaservice {
   async deletePlantaForCurrentUser(id: number) {
     const { data: authData, error: authError } = await this.supabase.auth.getUser();
     if (authError || !authData.user) {
-      throw new Error(authError?.message ?? 'No authenticated user');
+      throw new Error(authError?.message ?? 'No hi ha cap usuari autenticat');
     }
 
     const { error } = await this.supabase
       .from('plantes')
       .delete()
+      .eq('id', id)
+      .eq('usuari', authData.user.id);
+
+    if (error) {
+      throw new Error(error.message);
+    }
+  }
+
+  async actualitzarFavoritaUsuariActual(id: number, favorita: boolean) {
+    const { data: authData, error: authError } = await this.supabase.auth.getUser();
+    if (authError || !authData.user) {
+      throw new Error(authError?.message ?? 'No hi ha cap usuari autenticat');
+    }
+
+    const { error } = await this.supabase
+      .from('plantes')
+      .update({ favorite: favorita })
       .eq('id', id)
       .eq('usuari', authData.user.id);
 
@@ -193,6 +211,7 @@ export class Supaservice {
       password: signupData.password,
       options,
     });
+
     if (error) {
       throw error;
     }
@@ -203,8 +222,108 @@ export class Supaservice {
     return this.supabase.auth.getUser();
   }
 
+  async getCurrentUserProfile() {
+    const { data, error } = await this.supabase.auth.getUser();
+    if (error || !data.user) {
+      throw new Error(error?.message ?? 'No hi ha cap usuari autenticat');
+    }
+
+    this.currentUser.set(data.user);
+    const avatarUrlRaw = this.extractAvatarUrl(data.user);
+
+    return {
+      email: data.user.email ?? '',
+      fullName:
+        typeof data.user.user_metadata?.['full_name'] === 'string'
+          ? data.user.user_metadata['full_name']
+          : '',
+      avatarUrlRaw,
+      avatarUrl: this.normalizeImagePath(avatarUrlRaw),
+    };
+  }
+
+  async updateCurrentUserProfile(changes: {
+    fullName?: string;
+    email?: string;
+    password?: string;
+    avatarUrl?: string;
+  }) {
+    const payload: {
+      email?: string;
+      password?: string;
+      data?: { full_name?: string; avatar_url?: string };
+    } = {};
+
+    if (changes.email) {
+      payload.email = changes.email;
+    }
+    if (changes.password) {
+      payload.password = changes.password;
+    }
+    if (changes.fullName !== undefined || changes.avatarUrl !== undefined) {
+      payload.data = {};
+      if (changes.fullName !== undefined) {
+        payload.data.full_name = changes.fullName;
+      }
+      if (changes.avatarUrl !== undefined) {
+        payload.data.avatar_url = changes.avatarUrl;
+      }
+    }
+
+    if (Object.keys(payload).length === 0) {
+      throw new Error('No hi ha canvis per guardar');
+    }
+
+    const { data, error } = await this.supabase.auth.updateUser(payload);
+    if (error) {
+      throw error;
+    }
+
+    this.currentUser.set(data.user ?? null);
+    return data.user;
+  }
+
   isLoggedIn() {
     return this.currentUser() !== null;
+  }
+
+  getCurrentUserEmail() {
+    const user = this.currentUser();
+    return user?.email ?? user?.id ?? '';
+  }
+
+  getCurrentUserAvatar() {
+    const user = this.currentUser();
+    const avatarUrlRaw = this.extractAvatarUrl(user);
+    return this.normalizeImagePath(avatarUrlRaw);
+  }
+
+  private extractAvatarUrl(user: User | null | undefined) {
+    const raw = user?.user_metadata?.['avatar_url'];
+    return typeof raw === 'string' ? raw.trim() : '';
+  }
+
+  private normalizeImagePath(value: string) {
+    const rawValue = value.trim();
+    if (!rawValue) {
+      return this.defaultProfileImage;
+    }
+
+    const sanitizedValue = rawValue.replace(/^['"]+|['"]+$/g, '');
+
+    if (/^https?:\/\//i.test(sanitizedValue)) {
+      return sanitizedValue;
+    }
+
+    if (/^data:image\//i.test(sanitizedValue)) {
+      return sanitizedValue;
+    }
+
+    if (sanitizedValue.startsWith('/')) {
+      return sanitizedValue;
+    }
+
+    return `/${sanitizedValue}`;
   }
 
   async logout() {

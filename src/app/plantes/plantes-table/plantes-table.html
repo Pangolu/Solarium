@@ -1,62 +1,161 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Nom</th>
-      <th scope="col">Ubicacio</th>
-      <th scope="col">Usuari</th>
-      <th scope="col">Capacitat</th>
-      <th scope="col">Favorita</th>
-      <th scope="col">Accions</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for(planta of plantes(); track planta.id){
-      <tr app-plantes-table-row [plantaId]="planta" (editarPlanta)="editarPlanta($event)" (eliminarPlanta)="eliminarPlanta($event)"></tr> <!--[planta] ha d'estar en el fill, perque sera el que li passara el pare-->
-      <!--[plantaId es el alias que tenim en el .ts]-->
-    }
-  </tbody>
-</table>
-
-@if (errorMessage()) {
-  <p>{{ errorMessage() }}</p>
-}
-
-<form [formGroup]="plantaForm" (ngSubmit)="afegirPlanta()" class="planta-form">
-  <h3>{{ editingPlantaId() === null ? 'Afegir planta solar' : 'Editar planta solar' }}</h3>
-
-  <div class="form-row">
-    <label for="nom">Nom</label>
-    <input id="nom" type="text" formControlName="nom" />
+<section class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="h4 mb-0">Taula de plantes</h2>
+    <span class="badge text-bg-secondary">{{ plantes().length }} registres</span>
   </div>
 
-  <div class="form-row">
-    <label for="latitude">Latitud</label>
-    <input id="latitude" type="number" step="any" formControlName="latitude" />
-  </div>
-
-  <div class="form-row">
-    <label for="longitude">Longitud</label>
-    <input id="longitude" type="number" step="any" formControlName="longitude" />
-  </div>
-
-  <div class="form-row">
-    <label for="capacitat">Capacitat</label>
-    <input id="capacitat" type="number" step="any" min="0" formControlName="capacitat" />
-  </div>
-
-  <div class="form-row">
-    <label for="foto">Foto (URL)</label>
-    <input id="foto" type="text" formControlName="foto" />
-  </div>
-
-  <div class="form-row checkbox-row">
-    <label for="favorite">Favorita</label>
-    <input id="favorite" type="checkbox" formControlName="favorite" />
-  </div>
-
-  @if (plantaForm.invalid && plantaForm.touched) {
-    <p>Revisa els camps obligatoris del formulari.</p>
+  @if (errorMessage()) {
+    <div class="alert alert-danger" role="alert">{{ errorMessage() }}</div>
   }
 
-  <button type="submit" [disabled]="isSaving()">{{ editingPlantaId() === null ? 'Guardar planta' : 'Guardar canvis' }}</button>
-</form>
+  <div class="card shadow-sm mb-4">
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle mb-0">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Nom</th>
+              <th scope="col">Ubicació</th>
+              <th scope="col">Usuari</th>
+              <th scope="col">Capacitat</th>
+              <th scope="col">Favorita</th>
+              <th scope="col" class="text-end">Accions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (planta of plantes(); track planta.id) {
+              <tr
+                app-plantes-table-row
+                [plantaId]="planta"
+                (editarPlanta)="editarPlanta($event)"
+                (eliminarPlanta)="eliminarPlanta($event)"
+              ></tr>
+            }
+            @if (plantes().length === 0) {
+              <tr>
+                <td colspan="6" class="text-center py-4 text-muted">
+                  No hi ha plantes registrades encara.
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h3 class="h5 mb-3">
+        {{ editingPlantaId() === null ? 'Afegir planta solar' : 'Editar planta solar' }}
+      </h3>
+
+      <form [formGroup]="plantaForm" (ngSubmit)="afegirPlanta()" class="row g-4">
+        <div class="col-12 col-lg-7">
+          <div class="row g-3">
+            <div class="col-12 col-md-6">
+              <label for="nom" class="form-label">Nom</label>
+              <input
+                id="nom"
+                type="text"
+                formControlName="nom"
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('nom')"
+              />
+            </div>
+
+            <div class="col-12 col-md-3">
+              <label for="latitude" class="form-label">Latitud</label>
+              <input
+                id="latitude"
+                type="number"
+                step="any"
+                formControlName="latitude"
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('latitude')"
+              />
+            </div>
+
+            <div class="col-12 col-md-3">
+              <label for="longitude" class="form-label">Longitud</label>
+              <input
+                id="longitude"
+                type="number"
+                step="any"
+                formControlName="longitude"
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('longitude')"
+              />
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="capacitat" class="form-label">Capacitat</label>
+              <input
+                id="capacitat"
+                type="number"
+                step="any"
+                min="0"
+                formControlName="capacitat"
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('capacitat')"
+              />
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label for="foto" class="form-label">Foto (URL)</label>
+              <input
+                id="foto"
+                type="text"
+                formControlName="foto"
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('foto')"
+              />
+            </div>
+
+            <div class="col-12">
+              <div class="form-check">
+                <input
+                  id="favorite"
+                  type="checkbox"
+                  formControlName="favorite"
+                  class="form-check-input"
+                />
+                <label for="favorite" class="form-check-label">Favorita</label>
+              </div>
+            </div>
+
+            @if (shouldShowValidationSummary()) {
+              <div class="col-12">
+                <div class="alert alert-danger mb-0" role="alert">
+                  <p class="mb-1">Revisa les validacions:</p>
+                  <ul class="mb-0 ps-3">
+                    @for (message of getValidationMessages(); track message) {
+                      <li>{{ message }}</li>
+                    }
+                  </ul>
+                </div>
+              </div>
+            }
+
+            <div class="col-12 d-flex gap-2">
+              <button type="submit" class="btn btn-primary" [disabled]="isSaving()">
+                {{ editingPlantaId() === null ? 'Guardar planta' : 'Guardar canvis' }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-5">
+          <div class="map-picker-wrapper">
+            <p class="small text-muted mb-2">Clica al mapa per triar latitud i longitud.</p>
+            <div
+              #mapPickerContainer
+              class="map-picker-canvas"
+              aria-label="Selector de coordenades"
+            ></div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

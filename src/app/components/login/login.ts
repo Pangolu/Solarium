@@ -1,45 +1,80 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, computed, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { email, form, required, submit } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { Supaservice } from '../../services/supaservice';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login {
-  supaservice: Supaservice = inject(Supaservice);
-  formulario: FormGroup;
-  formBuilder: FormBuilder = inject(FormBuilder);
-  router: Router = inject(Router);
-  errorMessage: string = '';
+  private supaservei: Supaservice = inject(Supaservice);
+  private enrutador: Router = inject(Router);
 
-  constructor() {
-    this.formulario = this.formBuilder.group({
-      email: ['', [Validators.email, Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-    });
+  modelIniciSessio = signal({
+    correuElectronic: '',
+    contrasenya: '',
+  });
+
+  formulariIniciSessio = form(this.modelIniciSessio, (camp) => {
+    required(camp.correuElectronic);
+    email(camp.correuElectronic);
+    required(camp.contrasenya);
+  });
+
+  missatgeError = signal('');
+  isSubmitting = signal(false);
+
+  correuNoValid = computed(() => {
+    const camp = this.formulariIniciSessio.correuElectronic();
+    return camp.touched() && camp.invalid();
+  });
+
+  contrasenyaNoValida = computed(() => {
+    const camp = this.formulariIniciSessio.contrasenya();
+    return camp.touched() && !this.modelIniciSessio().contrasenya.trim();
+  });
+
+  actualitzarCorreuElectronic(event: Event) {
+    const valor = (event.target as HTMLInputElement).value;
+    this.formulariIniciSessio.correuElectronic().value.set(valor);
   }
 
-  get emailNotValid() {
-    return this.formulario.controls['email']!.invalid && this.formulario.controls['email']!.touched;
+  actualitzarContrasenya(event: Event) {
+    const valor = (event.target as HTMLInputElement).value;
+    this.formulariIniciSessio.contrasenya().value.set(valor);
   }
 
-  async login() {
-    if (this.formulario.valid) {
-      try {
-        await this.supaservice.login(this.formulario.value);
-        this.errorMessage = '';
-        this.router.navigate(['/plantes_table']);
-      } catch (error: any) {
-        this.errorMessage = error.message || 'Login failed';
+  marcarComTocat(camp: 'correuElectronic' | 'contrasenya') {
+    this.formulariIniciSessio[camp]().markAsTouched();
+  }
+
+  async iniciarSessio() {
+    this.missatgeError.set('');
+    this.isSubmitting.set(true);
+    try {
+      await submit(this.formulariIniciSessio, async () => {
+        const valor = this.modelIniciSessio();
+        await this.supaservei.login({
+          email: valor.correuElectronic.trim(),
+          password: valor.contrasenya,
+        });
+        this.enrutador.navigate(['/plantes_table']);
+        return undefined;
+      });
+      if (this.formulariIniciSessio().invalid() && !this.missatgeError()) {
+        this.missatgeError.set('Omple tots els camps correctament');
       }
-    } else {
-      this.errorMessage = 'Please fill in all fields correctly';
-      this.formulario.markAllAsTouched();
+    } catch (error: unknown) {
+      this.missatgeError.set(
+        error instanceof Error ? error.message : "Ha fallat l'inici de sessio",
+      );
+    } finally {
+      this.isSubmitting.set(false);
     }
   }
 }
