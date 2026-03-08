@@ -1,0 +1,85 @@
+<div class="register-container">
+  <h1>Solarium</h1>
+  <img src="/imatge_predefinida.png" alt="Imatge predefinida" class="register-image" />
+
+  <div class="container">
+    <form (ngSubmit)="registrar()">
+      <div class="form-group">
+        <label for="fullName">Nom complet</label>
+        <input
+          type="text"
+          class="form-control"
+          id="fullName"
+          [value]="modelRegistre().nomComplet"
+          (input)="actualitzarCamp('nomComplet', $event)"
+          (blur)="marcarComTocat('nomComplet')"
+        />
+        @if (nomCompletMassaCurt()) {
+          <small class="form-text text-danger">El nom ha de tenir almenys 2 lletres.</small>
+        }
+      </div>
+      <br />
+      <div class="form-group">
+        <label for="email">Correu electrònic</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          [value]="modelRegistre().correuElectronic"
+          (input)="actualitzarCamp('correuElectronic', $event)"
+          (blur)="marcarComTocat('correuElectronic')"
+        />
+        @if (correuObligatori()) {
+          <small class="form-text text-danger">El correu electronic es obligatori.</small>
+        }
+        @if (correuFormatInvalid()) {
+          <small class="form-text text-danger">Introdueix un correu electrònic vàlid.</small>
+        }
+      </div>
+      <br />
+      <div class="form-group">
+        <label for="password">Contrasenya</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          [value]="modelRegistre().contrasenya"
+          (input)="actualitzarCamp('contrasenya', $event)"
+          (blur)="marcarComTocat('contrasenya')"
+        />
+        @if (contrasenyaNoValida()) {
+          <small class="form-text text-danger"
+            >La contrasenya ha de tenir almenys 8 caràcters.</small
+          >
+        }
+      </div>
+      <br />
+      <div class="form-group">
+        <label for="confirmPassword">Confirma la contrasenya</label>
+        <input
+          type="password"
+          class="form-control"
+          id="confirmPassword"
+          [value]="modelRegistre().confirmaContrasenya"
+          (input)="actualitzarCamp('confirmaContrasenya', $event)"
+          (blur)="marcarComTocat('confirmaContrasenya')"
+        />
+        @if (confirmaContrasenyaNoValida()) {
+          <small class="form-text text-danger">Confirma la teva contrasenya.</small>
+        }
+        @if (contrasenyesNoCoincideixen()) {
+          <small class="form-text text-danger">Les contrasenyes no coincideixen.</small>
+        }
+      </div>
+      <br />
+      <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
+        {{ isSubmitting() ? 'Creant compte...' : 'Crea un compte' }}
+      </button>
+    </form>
+
+    @if (missatgeError()) {
+      <div class="text-danger mt-2">{{ missatgeError() }}</div>
+    }
+    <a [routerLink]="['/home']" class="login-link">Torna a l'inici de sessió</a>
+  </div>
+</div>

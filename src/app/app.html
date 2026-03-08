@@ -1,0 +1,7 @@
+@if (supaservice.isLoggedIn()) {
+  <app-header></app-header>
+}
+<router-outlet></router-outlet>
+@if (supaservice.isLoggedIn()) {
+  <app-footer></app-footer>
+}

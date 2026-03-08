@@ -1,0 +1,23 @@
+.home-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.home-container h1 {
+  margin: 0;
+}
+
+.home-image {
+  max-width: 160px;
+  width: 100%;
+  height: auto;
+}
+
+.register-link {
+  text-decoration: none;
+}

@@ -1,0 +1,29 @@
+<section class="detail-page">
+  @if (loading()) {
+    <p class="status-message">Carregant detall de la planta...</p>
+  }
+
+  @if (!loading() && errorMessage()) {
+    <p class="status-message error-message">{{ errorMessage() }}</p>
+  }
+
+  @if (!loading() && planta()) {
+    <article class="card detail-card">
+      <img [src]="getImageSrc()" class="card-img-top" alt="Imatge planta solar" />
+
+      <div class="card-body">
+        <h2 class="card-title">{{ planta()!.nom }}</h2>
+        <p class="card-text"><strong>ID:</strong> {{ planta()!.id }}</p>
+        <p class="card-text"><strong>Usuari:</strong> {{ planta()!.user }}</p>
+        <p class="card-text"><strong>Data creació:</strong> {{ planta()!.created_at }}</p>
+        <p class="card-text">
+          <strong>Ubicació:</strong> {{ planta()!.ubicacio.latitude }},
+          {{ planta()!.ubicacio.longitude }}
+        </p>
+        <p class="card-text"><strong>Capacitat:</strong> {{ planta()!.capacitat }}</p>
+
+        <a [routerLink]="['/plantes']" class="btn btn-outline-primary mt-3">Tornar a plantes</a>
+      </div>
+    </article>
+  }
+</section>

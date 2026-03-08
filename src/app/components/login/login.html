@@ -1,0 +1,40 @@
+<div class="container">
+  <form (ngSubmit)="iniciarSessio()">
+    <div class="form-group">
+      <label for="email">Correu electrònic</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        [value]="modelIniciSessio().correuElectronic"
+        (input)="actualitzarCorreuElectronic($event)"
+        (blur)="marcarComTocat('correuElectronic')"
+      />
+      @if (correuNoValid()) {
+        <small class="form-text text-danger">Introdueix un correu electrònic vàlid.</small>
+      }
+    </div>
+    <br />
+    <div class="form-group">
+      <label for="password">Contrasenya</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        [value]="modelIniciSessio().contrasenya"
+        (input)="actualitzarContrasenya($event)"
+        (blur)="marcarComTocat('contrasenya')"
+      />
+      @if (contrasenyaNoValida()) {
+        <small class="form-text text-danger">La contrasenya es obligatoria.</small>
+      }
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary" [disabled]="isSubmitting()">
+      {{ isSubmitting() ? 'Entrant...' : 'Inicia sessió' }}
+    </button>
+  </form>
+  @if (missatgeError()) {
+    <div class="text-danger mt-2">{{ missatgeError() }}</div>
+  }
+</div>

@@ -1,0 +1,19 @@
+<td>
+  {{ planta().nom }}
+</td>
+<td>{{ planta().ubicacio.latitude }}, {{ planta().ubicacio.longitude }}</td>
+<td>{{ planta().user }}</td>
+<td>{{ planta().capacitat }}</td>
+<td>
+  @if (planta().favorite) {
+    <span aria-label="favorita">❤️</span>
+  } @else {
+    <span class="text-muted">-</span>
+  }
+</td>
+<td class="text-end">
+  <div class="btn-group btn-group-sm" role="group" aria-label="Accions planta">
+    <button type="button" class="btn btn-outline-primary" (click)="editar()">Editar</button>
+    <button type="button" class="btn btn-outline-danger" (click)="eliminar()">Eliminar</button>
+  </div>
+</td>

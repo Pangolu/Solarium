@@ -1,0 +1,30 @@
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.register-container h1 {
+  margin: 0;
+}
+
+.register-image {
+  max-width: 160px;
+  width: 100%;
+  height: auto;
+}
+
+.register-container .container {
+  width: 100%;
+  max-width: 420px;
+}
+
+.login-link {
+  display: inline-block;
+  margin-top: 0.75rem;
+  text-decoration: none;
+}

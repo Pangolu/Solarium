@@ -1,0 +1,13 @@
+<div class="cards-container">
+  @for(card of cards(); track card.id){
+    <app-planta-card [plantaId]="card" (coretPreferit)="coretFavorit(card)"></app-planta-card>
+  }
+</div>
+
+@if (errorMessage()) {
+  <p>{{ errorMessage() }}</p>
+}
+
+@if (!errorMessage() && cards().length === 0) {
+  <p>No tens plantes registrades.</p>
+}

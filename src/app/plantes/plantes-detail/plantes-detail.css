@@ -1,0 +1,44 @@
+.detail-page {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem 1rem;
+}
+
+.detail-card {
+  width: min(100%, 42rem);
+}
+
+.detail-card .card-img-top {
+  height: 300px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.detail-card .card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.detail-card .card-title {
+  margin-bottom: 0.4rem;
+}
+
+.detail-card .card-text {
+  margin-bottom: 0;
+}
+
+.status-message {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.error-message {
+  color: #b42318;
+}
+
+@media (max-width: 768px) {
+  .detail-card .card-img-top {
+    height: 220px;
+  }
+}

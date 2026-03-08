@@ -1,0 +1,15 @@
+.avatar-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 1px solid #dee2e6;
+}
+
+.profile-link {
+  text-decoration: none;
+}
+
+.profile-link:hover {
+  text-decoration: underline;
+}

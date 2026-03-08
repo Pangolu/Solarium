@@ -1,0 +1,11 @@
+/* Flexbox para mostrar las cards en horizontal */
+.cards-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.cards-container app-planta-card {
+  display: flex;
+}
